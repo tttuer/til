@@ -2,7 +2,7 @@ from fastapi import HTTPException
 
 from database import SessionLocal
 from user.domain.repository.user_repo import IUserRepository
-from user.domain.user import User as UserVo, Profile
+from user.domain.user import User as UserVo
 from user.infra.db_models.user import User
 from utils.db_utils import row_to_dict
 

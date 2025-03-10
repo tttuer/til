@@ -3,12 +3,6 @@ from datetime import datetime
 
 
 @dataclass
-class Profile:
-    name: str
-    email: str
-
-
-@dataclass
 class User:
     id: str
     name: str
