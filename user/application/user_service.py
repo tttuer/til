@@ -1,12 +1,10 @@
-from fastapi import HTTPException, Depends
-from containers import Container
+from fastapi import HTTPException
 from ulid import ULID
 from datetime import datetime
-from dependency_injector.wiring import inject, Provide
+from dependency_injector.wiring import inject
 
 from user.domain.repository.user_repo import IUserRepository
-from user.domain.user import User, Profile
-from user.infra.repository.user_repo import UserRepository
+from user.domain.user import User
 from utils.crypto import Crypto
 
 
@@ -33,10 +31,8 @@ class UserService:
         now = datetime.now()
         user: User = User(
             id=self.ulid.generate(),
-            profile=Profile(
-                name=name,
-                email=email,
-            ),
+            name=name,
+            email=email,
             password=self.crypto.encrypt(password),
             created_at=now,
             updated_at=now
