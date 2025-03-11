@@ -13,7 +13,7 @@ from utils.crypto import Crypto
 class UserService:
     @inject
     def __init__(self,
-                 user_repo: IUserRepository = Depends(Provide[Container.user_repo])):
+                 user_repo: IUserRepository):
         self.user_repo = user_repo
         self.ulid = ULID()
         self.crypto = Crypto()
