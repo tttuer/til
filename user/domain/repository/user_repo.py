@@ -8,5 +8,15 @@ class IUserRepository(metaclass=ABCMeta):
     def save(self, user: User):
         raise NotImplementedError
 
+    @abstractmethod
     def find_by_email(self, email: str):
         raise NotImplementedError
+
+    @abstractmethod
+    def update(self, user: User):
+        raise NotImplementedError
+
+    @abstractmethod
+    def find_by_id(self, id: str):
+        raise NotImplementedError
+

@@ -8,5 +8,6 @@ class User:
     name: str
     email: str
     password: str
+    memo: str
     created_at: datetime
     updated_at: datetime
