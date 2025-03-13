@@ -57,8 +57,25 @@ class UserRepository(IUserRepository):
 
         return user
 
-    def get_users(self) -> list[UserVo]:
+    def get_users(
+            self,
+            page: int = 1,
+            items_per_page: int = 10) -> tuple[int, list[UserVo]]:
         with SessionLocal() as db:
-            users = db.query(User).all()
+            query = db.query(User)
+            total_count = query.count()
 
-        return [UserVo(**row_to_dict(user)) for user in users]
+            offset = (page - 1) * items_per_page
+            users = query.offset(offset).limit(items_per_page).all()
+
+        return total_count, [UserVo(**row_to_dict(user)) for user in users]
+
+    def delete(self, id: str):
+        with SessionLocal() as db:
+            user = db.query(User).filter(User.id == id).first()
+
+            if not user:
+                raise HTTPException(status_code=422)
+
+            db.delete(user)
+            db.commit()
