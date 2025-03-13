@@ -32,6 +32,7 @@ def create_user(user: CreateUserBody,
     return created_user
 
 @router.put("/{user_id}")
+@inject
 def update_user(user_id: str,
                 user: UpdateUser,
                 user_service: UserService = Depends(Provide[Container.user_service])):

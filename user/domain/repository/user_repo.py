@@ -20,3 +20,8 @@ class IUserRepository(metaclass=ABCMeta):
     def find_by_id(self, id: str):
         raise NotImplementedError
 
+    @abstractmethod
+    def get_users(self) -> list[User]:
+        raise NotImplementedError
+
+
