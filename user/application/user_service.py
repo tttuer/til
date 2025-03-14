@@ -4,7 +4,7 @@ from dependency_injector.wiring import inject
 from fastapi import HTTPException, status
 from ulid import ULID
 
-from common.auth import create_access_token
+from common.auth import create_access_token, Role
 from user.domain.repository.user_repo import IUserRepository
 from user.domain.user import User
 from utils.crypto import Crypto
@@ -77,7 +77,8 @@ class UserService:
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
 
         access_token = create_access_token(
-            payload={"user_id": user.id}
+            payload={"user_id": user.id},
+            role=Role.USER
         )
 
         return access_token

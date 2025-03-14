@@ -7,6 +7,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from pydantic import BaseModel, Field, EmailStr
 from starlette import status
 
+from common.auth import CurrentUser, get_current_user
 from containers import Container
 from user.application.user_service import UserService
 
@@ -19,7 +20,7 @@ class CreateUserBody(BaseModel):
     password: str = Field(min_length=8, max_length=32)
 
 
-class UpdateUser(BaseModel):
+class UpdateUserBody(BaseModel):
     name: str | None = Field(min_length=2, max_length=32, default=None)
     password: str | None = Field(min_length=8, max_length=32, default=None)
 
@@ -52,16 +53,16 @@ def create_user(user: CreateUserBody,
     return created_user
 
 
-@router.put("/{user_id}")
+@router.put("", response_model=UserResponse)
 @inject
-def update_user(user_id: str,
-                user: UpdateUser,
+def update_user(current_user: Annotated[CurrentUser, Depends(get_current_user)],
+                body: UpdateUserBody,
                 user_service: UserService = Depends(
                     Provide[Container.user_service])):
     user = user_service.update_user(
-        user_id=user_id,
-        name=user.name,
-        password=user.password
+        user_id=current_user.id,
+        name=body.name,
+        password=body.password
     )
 
     return user
@@ -92,6 +93,7 @@ def delete_user(
     # TODO: 토큰에서 유저 아이디를 구한다.
 
     user_service.delete(user_id)
+
 
 @router.post("/login")
 @inject
