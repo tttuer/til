@@ -73,6 +73,7 @@ def update_user(current_user: Annotated[CurrentUser, Depends(get_current_user)],
 def get_users(
         page: int = 1,
         items_per_page: int = 10,
+        current_user: CurrentUser = Depends(get_current_user),
         user_service: UserService = Depends(Provide[Container.user_service])
 ) -> GetUsersResponse:
     total_count, users = user_service.get_users(page, items_per_page)
@@ -87,12 +88,12 @@ def get_users(
 @router.delete("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
 @inject
 def delete_user(
-        user_id: str,
+        current_user: Annotated[CurrentUser, Depends(get_current_user)],
         user_service: UserService = Depends(Provide[Container.user_service])
 ):
     # TODO: 토큰에서 유저 아이디를 구한다.
 
-    user_service.delete(user_id)
+    user_service.delete(current_user.id)
 
 
 @router.post("/login")

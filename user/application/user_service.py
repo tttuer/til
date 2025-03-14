@@ -76,9 +76,16 @@ class UserService:
         if not self.crypto.verify(password, user.password):
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
 
-        access_token = create_access_token(
-            payload={"user_id": user.id},
+        return self.get_access_token(user.id)
+
+    def get_access_token(self, user_id: str):
+        if user_id == 'admin':
+            return create_access_token(
+                payload={"user_id": user_id},
+                role=Role.ADMIN
+            )
+
+        return create_access_token(
+            payload={"user_id": user_id},
             role=Role.USER
         )
-
-        return access_token
