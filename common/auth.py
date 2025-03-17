@@ -7,7 +7,11 @@ from fastapi import HTTPException, status, Depends
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 
-SECRET_KEY = "SECRET_KEY_IS_POWERFUL"
+from config import get_settings
+
+settings = get_settings()
+
+SECRET_KEY = f"{settings.jwt_secret}"
 ALGORITHM = "HS256"
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/users/login")
 
