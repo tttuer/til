@@ -35,16 +35,16 @@ class CreateNoteBody(BaseModel):
 @router.post("", status_code=201, response_model=NoteResponse)
 @inject
 def create_note(
-        current_user: Annotated[CurrentUser, Depends(get_current_user)],
-        body: CreateNoteBody,
-        note_service: NoteService = Depends(Provide[Container.note_service])
+    current_user: Annotated[CurrentUser, Depends(get_current_user)],
+    body: CreateNoteBody,
+    note_service: NoteService = Depends(Provide[Container.note_service]),
 ):
     note = note_service.create_note(
         user_id=current_user.id,
         title=body.title,
         content=body.content,
         memo_date=body.memo_date,
-        tag_names=body.tags if body.tags else []
+        tag_names=body.tags if body.tags else [],
     )
 
     response = asdict(note)

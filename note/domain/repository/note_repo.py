@@ -5,8 +5,9 @@ from note.domain.note import Note
 
 class INoteRepository(metaclass=ABCMeta):
     @abstractmethod
-    def get_notes(self, user_id: str, page: int, items_per_page: int) -> tuple[
-        int, list[Note]]:
+    def get_notes(
+        self, user_id: str, page: int, items_per_page: int
+    ) -> tuple[int, list[Note]]:
         raise NotImplementedError
 
     @abstractmethod
@@ -31,10 +32,10 @@ class INoteRepository(metaclass=ABCMeta):
 
     @abstractmethod
     def get_notes_by_tag_name(
-            self,
-            user_id: str,
-            tag_name: str,
-            page: int,
-            items_per_page: int,
+        self,
+        user_id: str,
+        tag_name: str,
+        page: int,
+        items_per_page: int,
     ) -> tuple[int, list[Note]]:
         raise NotImplementedError
