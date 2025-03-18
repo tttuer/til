@@ -14,8 +14,7 @@ app.include_router(note_routers)
 
 
 @app.exception_handler(RequestValidationError)
-async def validation_exception_handler(request: Request,
-                                       exc: RequestValidationError):
+async def validation_exception_handler(request: Request, exc: RequestValidationError):
     return JSONResponse(
         status_code=400,
         content=exc.errors(),
